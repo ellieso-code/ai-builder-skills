@@ -1,8 +1,6 @@
 # ai-builder-skills
 
-Claude Code skills for product managers and AI builders.
-
-Skills are reusable instruction modules that teach Claude Code (and similar agents) how to do specific tasks well: write a PRD, run a structured brainstorm, audit a design system, ship faster. Drop one into your `~/.claude/skills/` folder and Claude picks it up automatically.
+A series of tools for AI builders using coding agents like Claude Code.
 
 This repo is a collection. Each skill lives in its own folder under `skills/`, with a `SKILL.md` file that defines its trigger, scope, and behavior.
 
@@ -28,7 +26,7 @@ Claude Code picks up new skills on the next session start. Invoke a skill with `
 
 - **[design-md](skills/design-md/)** — Interactive design systems specialist that creates DESIGN.md files in the [Google Labs format](https://github.com/google-labs-code/design.md). Walks you through colors, typography, spacing, components, and dos-and-donts with questions that capture intent, not just values. Useful for PMs and builders who want AI coding tools to generate distinctive UIs instead of generic AI-slop aesthetics.
 - **[product-spec](skills/product-spec/)** — One-page working spec for solo coding projects. Walks you through 7 sections (What, Why, Who, Scope, Success criteria, Non-goals, Constraints) one at a time, proposing interpretations from your brief before silently filling them. Output is a SPEC.md the agent can plan and build against. Designed for builders shipping personal, learning, or MVP projects, not stakeholder PRDs.
-- **[build-kickoff](skills/build-kickoff/)** — Greenfield orchestrator for kicking off a new code project the right way. Walks 12 steps from vague idea to reviewed plan: brief → folder check → solution exploration (in Plan Mode) → spec → design system → CLAUDE.md → phased plan → todo list → optional AI prompt → review gate → GitHub → hand-off to executing-plans. Invokes `product-spec` and `design-md` from this repo plus `superpowers:writing-plans` and `superpowers:executing-plans`. Use to maximize the kickoff phase so iterations stay tight and the agent avoids the generic AI slop aesthetic.
+- **[build-kickoff](skills/build-kickoff/)** — Greenfield orchestrator for kicking off a new code project the right way. Walks from vague idea to reviewed plan: brief → folder check → solution exploration (in Plan Mode) → spec → design system → CLAUDE.md → phased plan → todo list → optional AI prompt → review gate → GitHub → hand-off to executing-plans. Invokes `product-spec` and `design-md` from this repo plus `superpowers:writing-plans` and `superpowers:executing-plans`. Use to maximize the kickoff phase so iterations stay tight and the agent avoids the generic AI slop aesthetic.
 
 ## Skill bundle: kickstart a new project
 
@@ -45,10 +43,6 @@ cp -r skills/build-kickoff skills/product-spec skills/design-md ~/.claude/skills
 ```
 
 `build-kickoff` also depends on `superpowers:writing-plans` and `superpowers:executing-plans` from the [superpowers plugin](https://github.com/obra/superpowers). Install via `/plugin install superpowers@claude-plugins-official`.
-
-## A note on contributions
-
-This is a personal collection, not currently open for outside contributions. Feel free to fork, copy, or adapt any skill for your own use under the MIT license. If you spot a bug or have a strong suggestion, you're welcome to open an issue, but I may not act on it.
 
 ## License
 
