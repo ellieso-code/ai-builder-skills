@@ -28,9 +28,9 @@ Claude Code picks up new skills on the next session start. Invoke a skill with `
 
 _Skills will be added over time. Check back, or watch the repo for updates._
 
-## Contributing
+## A note on contributions
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the skill format and PR conventions.
+This is a personal collection, not currently open for outside contributions. Feel free to fork, copy, or adapt any skill for your own use under the MIT license. If you spot a bug or have a strong suggestion, you're welcome to open an issue, but I may not act on it.
 
 ## License
 
