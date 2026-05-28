@@ -27,6 +27,7 @@ Claude Code picks up new skills on the next session start. Invoke a skill with `
 ## Skills in this repo
 
 - **[design-md](skills/design-md/)** — Interactive design systems specialist that creates DESIGN.md files in the [Google Labs format](https://github.com/google-labs-code/design.md). Walks you through colors, typography, spacing, components, and dos-and-donts with questions that capture intent, not just values. Useful for PMs and builders who want AI coding tools to generate distinctive UIs instead of generic AI-slop aesthetics.
+- **[product-spec](skills/product-spec/)** — One-page working spec for solo coding projects. Walks you through 7 sections (What, Why, Who, Scope, Success criteria, Non-goals, Constraints) one at a time, proposing interpretations from your brief before silently filling them. Output is a SPEC.md the agent can plan and build against. Designed for builders shipping personal, learning, or MVP projects, not stakeholder PRDs.
 
 ## A note on contributions
 
