@@ -64,11 +64,12 @@ Follow up: "Does your project already have code?"
 ### Mode A: Study an existing site
 
 1. Ask for URL or screenshots.
-2. If URL: use `WebFetch` to grab page HTML/CSS. Extract CSS custom properties, font stacks, spacing values.
+2. If URL: use `WebFetch` to grab page HTML/CSS. Extract CSS custom properties, font stacks, spacing values. For more precision, fetch the raw HTML and stylesheets directly via `curl` and grep for `font-family`, `font-size`, `border-radius`, `background-color`, hex codes, `rgb()`, etc. WebFetch summaries are often thin; the raw CSS is the source of truth.
 3. If screenshots: analyze visually. Estimate colors, infer fonts, identify spacing rhythm.
 4. If both: combine. Screenshots for vibe; HTML/CSS for exact tokens.
-5. Surface findings: "I extracted primary #X, Y font, Z spacing scale. Does that look right?"
-6. Proceed to Step 3 with extraction as starting tokens.
+5. Surface findings briefly. Filter out framework defaults (e.g. Bootstrap's `#007bff`, `#dc3545`); only report colors and tokens that actually belong to the brand.
+6. **Ask ONE upstream intent question (two-parter)** before drafting: (a) "What specifically drew you to this design?" (shapes Overview tone, identifies which section deserves disproportionate weight, populates the inspiration README "Why I like it" row); (b) "What's the file FOR?" (pure reference, starting point for the user's own build, or mood reference for a specific project). The answer to (b) determines how prescriptive the prose should be.
+7. **Draft the full file in one pass** (do NOT do Step 3's section-by-section pacing for Mode A). The answers to per-section questions are mostly in the source. Confirm the draft after, not before.
 
 ### Mode B: Existing app codebase
 
@@ -84,17 +85,26 @@ Follow up: "Does your project already have code?"
 
 ### Mode D: Merge sources
 
-1. Ask where source DESIGN.md files live. Suggest scanning `inspirations/`, `references/`, `design/`.
+1. Ask where source DESIGN.md files live. Suggest scanning `inspiration/`, `inspirations/`, `references/`, `design/`.
 2. Read each file. Parse YAML and prose.
 3. Surface conflicts: "Source A uses primary #855300, Source B uses #1B4DFF. Which do you want?"
 4. Use `AskUserQuestion` to resolve each conflict.
-5. Proceed to Step 3 to refine merged result.
+5. Like Mode A, **draft the merged file in one pass after conflict resolution**. Skip Step 3's per-section pacing. Conflict resolution IS the intent capture for merge mode.
 
 ## Step 3: Section-by-Section Guided Build
 
 Walk through each canonical section in order. For each, ask 1-3 guiding questions that elicit the *intent* layer. Never ask only for hex codes; always ask for the reasoning.
 
-**Pacing rule**: one section at a time. Don't dump all questions upfront.
+**Pacing rule (Mode C only)**: one section at a time. Don't dump all questions upfront. Modes A, B (if codebase tokens are clear), and D draft the full file in one pass after the upstream intent question and skip per-section pacing.
+
+### Schema constraints (apply to ALL sections below)
+
+The official linter enforces stricter unit and structure rules than the spec documentation suggests. Encode these as hard constraints so the first lint run is clean:
+
+1. **Token values accept only `px`, `rem`, `em` units.** No `vw`, `vh`, `%`, `ch`, `fr`, or other relative units. This affects `typography.fontSize`, `rounded.*`, and `spacing.*`. When studying a site that uses viewport units, record the desktop pixel equivalents in YAML and document the original `vw` implementation intent in prose immediately above the YAML block.
+2. **Each top-level section key (`colors:`, `typography:`, `components:`, etc.) must be defined in a SINGLE fenced YAML block.** Splitting `components:` across multiple yaml blocks (e.g. one per button group) triggers a warning. Group conceptually in prose with `###` subheadings, but consolidate all definitions into one yaml block per section.
+3. **`backgroundColor: transparent` triggers the contrast checker.** Transparent backgrounds get evaluated as `#00000000`, failing every contrast comparison. Use the explicit inherited color (typically `{colors.surface}`) instead. Document in prose that the rendered effect is visually transparent if needed.
+4. **Percentage values like `50%` are rejected.** For circles, document `border-radius: 50%` in prose only and use `full: 9999px` as the token equivalent for elements with consistent dimensions.
 
 ### 3.1 Overview (alias: Brand & Style) — the most important section
 
@@ -231,6 +241,8 @@ typography:
 
 **Typography object accepts**: fontFamily, fontSize, fontWeight, lineHeight, letterSpacing, fontFeature, fontVariation.
 
+**fontSize unit reminder**: only `px`, `rem`, `em` are accepted (per Schema constraint #1). If studying a site with viewport-unit headlines (`14vw`, `9.4vw`, etc.), convert to desktop pixel equivalents at the 1920px viewport (or whatever the source site targets) and record the original `vw` values in a prose sentence above the YAML so the implementation intent survives.
+
 **Prose**: weight rules ("Weight increases by one tier on blurred backgrounds for legibility"), line-height philosophy.
 
 ### 3.4 Layout (alias: Layout & Spacing)
@@ -291,6 +303,8 @@ rounded:
   full: 9999px
 ```
 
+**Unit reminder**: only `px`, `rem`, `em` are accepted (per Schema constraint #1). No `50%`. For perfect circles (avatars, decorative dots), use `full: 9999px` as the token-side equivalent and document `border-radius: 50%` in prose as the implementation hint for elements with consistent aspect ratios.
+
 **Prose**: "Buttons: lg. Cards: xl. Inputs: md. Pills/badges: full."
 
 ### 3.7 Components
@@ -303,7 +317,8 @@ rounded:
 
 **State variants are SEPARATE entries** with `-hover`, `-active`, `-focus`, `-disabled` suffixes. Each variant only overrides what changes from the base.
 
-**Default 6-component MVP** (offer this; let user expand):
+**Default 6-component MVP** (offer this; let user expand). Note: every `backgroundColor` resolves to a concrete color (not `transparent`), per Schema constraint #3:
+
 ```yaml
 components:
   button-primary:
@@ -317,7 +332,7 @@ components:
     backgroundColor: "{colors.primary-container}"
 
   button-secondary:
-    backgroundColor: transparent
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.primary}"
     typography: "{typography.label-md}"
     rounded: "{rounded.lg}"
@@ -340,7 +355,7 @@ components:
     height: 48px
 
   list-item:
-    backgroundColor: transparent
+    backgroundColor: "{colors.surface}"
     rounded: "{rounded.md}"
     padding: "{spacing.sm}"
   list-item-hover:
@@ -354,7 +369,7 @@ components:
     padding: "{spacing.xs}"
 ```
 
-**Prose**: group with `###` subheadings like `### Buttons`, `### Cards & Surfaces`, `### Inputs & Forms`, `### Lists & Navigation`. Each group gets 1-3 sentences of intent.
+**Prose**: group with `###` subheadings like `### Buttons`, `### Cards & Surfaces`, `### Inputs & Forms`, `### Lists & Navigation`. Each group gets 1-3 sentences of intent. **Crucial: the prose subheadings are organizational only. The `components:` YAML stays in a single fenced block (per Schema constraint #2). Don't follow each subheading with its own yaml block.**
 
 ### 3.8 Motion (non-canonical extension)
 
@@ -436,6 +451,8 @@ The linter checks these 8 rules:
 
 **If linter passes clean**: proceed to save.
 
+**Known acceptable warning: orphaned tokens in inspiration/reference files.** When studying a source whose accent colors belong to *artwork* (illustrations, photography, brand collateral) rather than UI, the linter will flag those colors as unreferenced by any component. This is intentional and should be defended in prose: name the colors as "decorative only, never UI chrome" in the Colors section and reinforce it in Do's and Don'ts. Do not force orphaned colors into components just to silence the warning. Doing so would corrupt the actual design rule.
+
 **Note**: If `npx` is unavailable or fails, fall back to a manual review checklist:
 1. Is section order correct?
 2. Do all `{token.refs}` resolve?
@@ -490,6 +507,8 @@ The complete reference template (with placeholders) lives in [template.md](templ
 - Use `rounded:` (not `radius:`) for border-radius tokens.
 - Use uppercase `DESIGN.md` for the filename.
 - Place state variants as separate component entries with `-hover`/`-active`/etc suffixes.
+- In Mode A (Study) and Mode D (Merge), ask one upstream intent question, then draft the full file in one pass. Skip per-section pacing.
+- Defend intentional orphaned-token warnings in prose (decorative-only accents in inspiration files).
 
 ### DON'T
 - Skip the Overview brief. Without it, tokens are characterless.
@@ -501,6 +520,10 @@ The complete reference template (with placeholders) lives in [template.md](templ
 - Add motion tokens to YAML by default; default to prose-only motion.
 - Use em dashes in any prose output.
 - Save before running the linter (unless linter is unavailable).
+- Use `vw`, `vh`, `%`, or any non-px/rem/em unit in token YAML values. Convert to px equivalents and document the original in prose.
+- Use `backgroundColor: transparent` in components. The contrast checker rejects it. Use the inherited surface color explicitly.
+- Split a top-level YAML key (especially `components:`) across multiple fenced blocks. Group with prose `###` subheadings only.
+- Force orphaned-token warnings into compliance by inventing fake component references.
 
 ## Naming Note
 
