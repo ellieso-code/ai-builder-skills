@@ -39,12 +39,18 @@ If you skip `product-spec` or `design-md`, `/build-kickoff` will fail at step 4 
 
 ## How to use this skill
 
-Type any of these to trigger it:
+The skill triggers automatically when you describe a new project from scratch. Phrasings that work:
 
-- `/build-kickoff`
-- "Let's start a new project"
+- "I want to build a [X]"
+- "Let's build a [X]"
+- "Build me a [one-pager / landing page / portfolio / MVP / side project / CLI]"
+- "Create a new [app / site / tool]"
 - "Kickstart a [X]"
-- "Build me a new [app / CLI / tool]"
+- "Start a new project"
+
+Or type `/build-kickoff` explicitly.
+
+**Note on precedence:** if you ask to build something that *also* sounds like a frontend component (e.g., "build a portfolio page"), this skill fires first — it orchestrates the kickoff phase (spec, design system, plan, constitution) which implementation skills like `frontend-design` then execute against. For *adding* a component to an existing project, use `superpowers:brainstorming` + `superpowers:writing-plans` directly instead.
 
 ## The 12-step flow
 
@@ -106,7 +112,7 @@ A few decisions in the skill worth knowing about:
 ## When to use this skill
 
 **Good fits:**
-- Starting a new code project from scratch (web app, CLI, mobile app, library)
+- Starting a new code project from scratch (web app, CLI, mobile app, library, one-pager, portfolio)
 - Want a structured spec + design + plan + constitution before any code
 - Want to maximize the kickoff phase so iterations stay tight
 - Want to avoid the generic AI aesthetic by locking in a design system before writing UI

@@ -1,6 +1,6 @@
 ---
 name: build-kickoff
-description: Use when starting a new code project from scratch, the user types /build-kickoff, or asks to kickstart/start/begin a new app or project. For greenfield only — adding features to existing projects use brainstorming + writing-plans directly.
+description: Use when starting a new code project from scratch. Triggers on "I want to build [X]", "let's build a [X]", "build me a [X]", "create a new [app/site/tool]", "kickstart [X]", "start a new project", or /build-kickoff. Includes small projects (one-pagers, landing pages, portfolios, MVPs, side projects, CLIs) as long as they are fresh greenfield builds, not additions to existing codebases. Fires BEFORE implementation skills like frontend-design when the user is starting a fresh project — build-kickoff orchestrates the kickoff phase (spec, design system, plan, constitution) which implementation skills then execute against. For adding features to existing projects use brainstorming + writing-plans directly.
 ---
 
 # Build Kickoff
