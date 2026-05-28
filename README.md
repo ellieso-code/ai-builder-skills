@@ -1,0 +1,37 @@
+# ai-builder-skills
+
+Claude Code skills for product managers and AI builders.
+
+Skills are reusable instruction modules that teach Claude Code (and similar agents) how to do specific tasks well: write a PRD, run a structured brainstorm, audit a design system, ship faster. Drop one into your `~/.claude/skills/` folder and Claude picks it up automatically.
+
+This repo is a collection. Each skill lives in its own folder under `skills/`, with a `SKILL.md` file that defines its trigger, scope, and behavior.
+
+## What this is
+
+A library of skill files (`SKILL.md` + supporting assets) you can install into Claude Code.
+
+## What this is not
+
+A list of "skills you need to become an AI builder." This repo holds executable instruction files for AI agents, not career advice.
+
+## Installing a skill
+
+Skills live in `~/.claude/skills/<skill-name>/`. To install one from this repo:
+
+```bash
+cp -r skills/<skill-name> ~/.claude/skills/
+```
+
+Claude Code picks up new skills on the next session start. Invoke a skill with `/<skill-name>` or let Claude trigger it automatically based on the skill's description.
+
+## Skills in this repo
+
+_Skills will be added over time. Check back, or watch the repo for updates._
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the skill format and PR conventions.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
