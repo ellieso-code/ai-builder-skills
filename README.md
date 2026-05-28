@@ -26,7 +26,7 @@ Claude Code picks up new skills on the next session start. Invoke a skill with `
 
 ## Skills in this repo
 
-_Skills will be added over time. Check back, or watch the repo for updates._
+- **[design-md](skills/design-md/)** — Interactive design systems specialist that creates DESIGN.md files in the [Google Labs format](https://github.com/google-labs-code/design.md). Walks you through colors, typography, spacing, components, and dos-and-donts with questions that capture intent, not just values. Useful for PMs and builders who want AI coding tools to generate distinctive UIs instead of generic AI-slop aesthetics.
 
 ## A note on contributions
 
